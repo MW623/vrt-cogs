@@ -119,6 +119,11 @@ class MessageListener(MixinMeta):
             # If we're specifically ignoring a user we don't want to see them anywhere
             return
 
+        BLOCKED_CHANNEL_ID = 734241866933076048
+        if message.channel.id == BLOCKED_CHANNEL_ID:
+            # Specifically blocks #bot-commands in RDB7
+            return
+
         profile = conf.get_profile(user_id).add_message()
         weekly = None
         if conf.weeklysettings.on:
