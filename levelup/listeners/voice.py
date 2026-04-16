@@ -174,9 +174,11 @@ class VoiceListener(MixinMeta):
         log.debug(f"{member.name} spent {round(total_time_in_voice, 2)}s in VC {before.channel.name} in {member.guild}")
         if effective_time > 0:
             log.debug(f"{round(effective_time, 2)}s of that was effective time")
-        profile.voice += total_time_in_voice
-        if weekly:
-            weekly.voice += total_time_in_voice
+        # Only count time where user was actually eligible (not solo, not deafened, etc.)
+        if effective_time > 0:
+            profile.voice += effective_time
+            if weekly:
+                weekly.voice += effective_time
 
         # Calculate the exp to add
         xp_to_add = conf.voicexp * (effective_time / 60)
